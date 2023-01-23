@@ -6,7 +6,7 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:22:24 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/23 17:59:36 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/23 23:40:33 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 char *get_next_line(int fd)
 {
-	char **line;
+	char *line;
 	char *buffer;
 	static char *save;
 	int rd;
@@ -46,20 +46,16 @@ char *get_next_line(int fd)
       if (check_newline(buffer))
       {
 				printf("***newline in buffer\n");
-        char *buffer_before_newline;
-        char *buffer_after_newline;
-        seperate_by_newline(&buffer, &buffer_before_newline, &buffer_after_newline);
-        line = &buffer_before_newline;
-        save = buffer_after_newline;
+        save = seperate_by_newline(buffer, &line);
 				printf("rd: %d\n", rd);
-				printf("line: %s\n", *line);
+				printf("line: %s\n", line);
 				printf("save: %s\n", save);
-				return (*line);
+				return (line);
       }
       else
       {
 				printf("***No newline in buffer\n");
-        save = buffer;
+        save = ft_strdup(buffer);
 				printf("save: %s\n", save);
 				printf("buffer: %s\n", buffer);
 				printf("rd: %d\n", rd);
@@ -73,14 +69,10 @@ char *get_next_line(int fd)
       if (check_newline(save))
       {
 				printf("***New line in save\n");
-        char *save_before_newline;
-        char *save_after_newline;
-        seperate_by_newline(&save, &save_before_newline, &save_after_newline);
-        line = &save_before_newline;
-        save = ft_strjoin(save_after_newline, buffer);
-				printf("line: %s\n", *line);
+        save = ft_strjoin(seperate_by_newline(save, &line), buffer);
+				printf("line: %s\n", line);
 				printf("save: %s\n", save);
-				return (*line);
+				return (line);
       }
       else
       {
@@ -88,7 +80,7 @@ char *get_next_line(int fd)
 				printf("save: %s\n", save);
 				printf("buffer: %s\n", buffer);
 				save = ft_strjoin(save, buffer);
-        *line = save;
+        line = save;
       }
 
     }
@@ -99,28 +91,34 @@ char *get_next_line(int fd)
 	// Save exist, No rd
 	if (save && !rd)
 	{
-		printf("*** save && rd == 0\n");
-		if (check_newline(save))
-		{
-			printf("***New line in save\n");
-			char *save_before_newline;
-			char *save_after_newline;
-			seperate_by_newline(&save, &save_before_newline, &save_after_newline);
-			line = &save_before_newline;
-			save = save_after_newline;
-			printf("line: %s\n", *line);
-			printf("save: %s\n", save);
-			printf("check_newline(save): %d\n", check_newline(save));
-			return (*line);
-		}
-		else
-		{
-				*line = ft_strjoin(save, buffer);
-				// free(save);
-				return (*line);
-
-		}
+		line = get_line_from_save(&save);
+		return (line);
 	}
+}
+
+
+char *get_line_from_save(char **save)
+{
+	char *line;
+
+	printf("*** save && rd == 0\n");
+	if (check_newline(*save))
+	{
+		printf("***New line in save\n");
+		*save = seperate_by_newline(*save, &line);
+		printf("line: %s\n", line);
+		printf("save: %s\n", *save);
+		printf("check_newline(save): %d\n", check_newline(*save));
+	}
+	else
+	{
+			printf("***No new line in save\n");
+			printf("save: %s\n", *save);
+			line = *save;
+			// free(save);
+	}
+	printf("save: %s\n", *save);
+	return (line);
 }
 
 int check_newline(char *str)
@@ -134,14 +132,17 @@ int check_newline(char *str)
 	return (0);
 }
 
-void seperate_by_newline(char **source, char **before, char **after)
+char *seperate_by_newline(char *source, char **before)
 {
-	*after = ft_strchr(*source, '\n') + 1;
-	*before = ft_substr(*source, 0, *after - *source);
+	char *after;
+
+	after = ft_strchr(source, '\n') + 1;
+	*before = ft_substr(source, 0, after - source);
+
+	return (after);
 	// printf("before: %s\n", *before);
 	// printf("after: %s\n", *after);
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -151,7 +152,7 @@ int main(int argc, char *argv[])
 	// char *after = "huhuhu";
 	// printf("[before]: %s\n", before);
 	// printf("[after]: %s\n", after);
-	// seperate_by_newline(&source, &before, &after);
+	// after = seperate_by_newline(source, &before);
 	// printf("[before]: %s\n", before);
 	// printf("[after]: %s\n", after);
 	int fd;

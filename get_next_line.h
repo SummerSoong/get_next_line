@@ -6,7 +6,7 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 11:06:46 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/22 20:54:59 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/23 23:38:40 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ char	*ft_strjoin(char const *s1, char const *s2);
 
 static int	join_line_and_save(char **line, char **save);
 int check_newline(char *str);
-void seperate_by_newline(char **source, char **before, char **after);
+char *seperate_by_newline(char *source, char **before);
+char *get_line_from_save(char **save);

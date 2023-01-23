@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"*.erb": "erb",
+		"*.html.erb": "erb",
+		"get_next_line.h": "c"
+	}
+}
