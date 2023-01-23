@@ -6,7 +6,7 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:22:24 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/22 23:08:58 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/23 17:59:36 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#define BUFFSIZE 100
+#define BUFFSIZE 1
 
 char *get_next_line(int fd)
 {
@@ -32,13 +32,42 @@ char *get_next_line(int fd)
 	printf("save: %s\n", save);
 	printf("buffer: %s\n", buffer);
 
+
   while ((rd = read(fd, buffer, BUFFSIZE)) && buffer)
   {
 		printf("-----------------\n");
 		printf("save: %s\n", save);
 		printf("rd: %d\n", rd);
 		printf("buffer: %s\n", buffer);
-    if (save)
+    if (!save)
+    {
+			printf("***No save\n");
+			printf("buffer: %s\n", buffer);
+      if (check_newline(buffer))
+      {
+				printf("***newline in buffer\n");
+        char *buffer_before_newline;
+        char *buffer_after_newline;
+        seperate_by_newline(&buffer, &buffer_before_newline, &buffer_after_newline);
+        line = &buffer_before_newline;
+        save = buffer_after_newline;
+				printf("rd: %d\n", rd);
+				printf("line: %s\n", *line);
+				printf("save: %s\n", save);
+				return (*line);
+      }
+      else
+      {
+				printf("***No newline in buffer\n");
+        save = buffer;
+				printf("save: %s\n", save);
+				printf("buffer: %s\n", buffer);
+				printf("rd: %d\n", rd);
+      }
+
+			printf("save: %s\n", save);
+    }
+		else
     {
 			printf("***Save exist\n");
       if (check_newline(save))
@@ -51,45 +80,24 @@ char *get_next_line(int fd)
         save = ft_strjoin(save_after_newline, buffer);
 				printf("line: %s\n", *line);
 				printf("save: %s\n", save);
-				if (!save)
-					rd = 0;
+				return (*line);
       }
       else
       {
 				printf("***No New line in save\n");
 				printf("save: %s\n", save);
 				printf("buffer: %s\n", buffer);
-        *line = ft_strjoin(save, buffer);
+				save = ft_strjoin(save, buffer);
+        *line = save;
       }
 
     }
-    else
-    {
-			printf("***No save\n");
-			printf("buffer: %s\n", buffer);
-      if (check_newline(buffer))
-      {
-				printf("***newline in buffer\n");
-        char *buffer_before_newline;
-        char *buffer_after_newline;
-        seperate_by_newline(&buffer, &buffer_before_newline, &buffer_after_newline);
-        line = &buffer_before_newline;
-        save = buffer_after_newline;
-				printf("line: %s\n", *line);
-				printf("save: %s\n", save);
-      }
-      else
-      {
-				printf("***No newline in buffer\n");
-        save = buffer;
-				printf("save: %s\n", save);
-				printf("buffer: %s\n", buffer);
-				printf("rd: %d\n", rd);
-      }
-    }
+
+		printf("At the end of while loop, save: %s\n", save);
   }
-printf("rd: %d\n", rd);
-	if (save && rd == 0)
+
+	// Save exist, No rd
+	if (save && !rd)
 	{
 		printf("*** save && rd == 0\n");
 		if (check_newline(save))
@@ -99,16 +107,20 @@ printf("rd: %d\n", rd);
 			char *save_after_newline;
 			seperate_by_newline(&save, &save_before_newline, &save_after_newline);
 			line = &save_before_newline;
-			save = ft_strjoin(save_after_newline, buffer);
+			save = save_after_newline;
 			printf("line: %s\n", *line);
 			printf("save: %s\n", save);
+			printf("check_newline(save): %d\n", check_newline(save));
+			return (*line);
 		}
 		else
 		{
 				*line = ft_strjoin(save, buffer);
+				// free(save);
+				return (*line);
+
 		}
 	}
-	return (*line);
 }
 
 int check_newline(char *str)
