@@ -1,4 +1,16 @@
-# include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/24 22:13:54 by songmengrui       #+#    #+#             */
+/*   Updated: 2023/01/24 22:14:50 by songmengrui      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -67,6 +79,7 @@ char	*ft_strdup(const char*s1)
 		ft_strlcpy (str, s1, s1_size);
 	return (str);
 }
+
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	unsigned char		*d;
@@ -85,6 +98,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return ((void *)d);
 }
+
 void	*ft_memmove(void *dst, const void *src, size_t n)
 {
 	unsigned char		*d;

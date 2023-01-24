@@ -6,7 +6,7 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 11:06:46 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/23 23:38:40 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/24 22:20:43 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	*ft_memmove(void *dst, const void *src, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 
-static int	join_line_and_save(char **line, char **save);
 int check_newline(char *str);
 char *seperate_by_newline(char *source, char **before);
-char *get_line_from_save(char **save);
+char	*read_buffer(int fd, char **save, char *line);
+char	*read_save(int fd, char **save, char *line);
+char	*get_next_line(int fd);

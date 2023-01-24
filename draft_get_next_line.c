@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
+/*   draft_get_next_line.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 13:22:24 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/23 23:40:33 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/24 22:16:57 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#define BUFFSIZE 1
+#define BUFFSIZE 10
 
 char *get_next_line(int fd)
 {
@@ -28,7 +28,6 @@ char *get_next_line(int fd)
 		return(NULL);
 	buffer[BUFFSIZE] = '\0';
 
-	printf("rd: %d\n", rd);
 	printf("save: %s\n", save);
 	printf("buffer: %s\n", buffer);
 
@@ -94,6 +93,7 @@ char *get_next_line(int fd)
 		line = get_line_from_save(&save);
 		return (line);
 	}
+	return (0);
 }
 
 
@@ -144,7 +144,7 @@ char *seperate_by_newline(char *source, char **before)
 	// printf("after: %s\n", *after);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
   // // check seperate_by_newline
 	// char *source = "hello\nworld\n42";
