@@ -6,14 +6,14 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:38:00 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/24 22:23:38 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/24 23:51:44 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
-#define BUFFSIZE 100
+#define BUFFSIZE 42
 
 char	*get_next_line(int fd)
 {
@@ -21,7 +21,6 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	line = NULL;
-	printf("save: %s\n", save);
 	if (!save)
 	{
 		line = read_buffer(fd, &save, line);
@@ -49,18 +48,25 @@ char	*read_save(int fd, char **save, char *line)
 char	*read_buffer(int fd, char **save, char *line)
 {
 	char	*buffer;
+	int		rd;
 
 	buffer = malloc(sizeof(*buffer) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	buffer[BUFFER_SIZE] = '\0';
-	while (read(fd, buffer, BUFFER_SIZE) && !line)
+	while ((rd = read(fd, buffer, BUFFER_SIZE)) > 0 && !line)
 	{
-		if (check_newline(buffer))
+		if (check_newline(buffer)){
 			*save = seperate_by_newline(buffer, &line);
+		}
 		else
 			*save = ft_strdup(buffer);
 	}
+	// if (rd == -1 || 0)
+	// {
+	// 	return (NULL);
+	// }
+	// free(buffer);
 	return (line);
 }
 
@@ -87,7 +93,7 @@ int	check_newline(char *str)
 int main()
 {
   // // check seperate_by_newline
-	// char *source = "hello\nworld\n42";
+	// char *source = "01234567890123456789012345678901234567890\n987654321098765432109876543210987654321098\n01234567890123456789012345678901234567890\n9876543210987654321098765432109876543210";
 	// char *before = "lalala";
 	// char *after = "huhuhu";
 	// printf("[before]: %s\n", before);
