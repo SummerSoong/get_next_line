@@ -6,14 +6,13 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 21:38:00 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/24 23:51:44 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/25 18:08:44 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
-#define BUFFSIZE 42
 
 char	*get_next_line(int fd)
 {
@@ -41,6 +40,11 @@ char	*read_save(int fd, char **save, char *line)
 	else
 	{
 		line = read_buffer(fd, save, line);
+		if (!line)
+		{
+			line = ft_strdup(*save);
+			*save = NULL;
+		}
 	}
 	return (line);
 }
@@ -74,8 +78,17 @@ char	*seperate_by_newline(char *source, char **before)
 {
 	char	*after;
 
-	after = ft_strchr(source, '\n') + 1;
-	*before = ft_substr(source, 0, after - source);
+	after = source;
+	while (*after)
+	{
+		if (*after == '\n')
+		{
+			after += 1;
+			break ;;
+		}
+		after++;
+	}
+	*before = ft_substr(source, 0, ft_strlen(source) - ft_strlen(after));
 	return (after);
 }
 
@@ -88,26 +101,4 @@ int	check_newline(char *str)
 		str++;
 	}
 	return (0);
-}
-
-int main()
-{
-  // // check seperate_by_newline
-	// char *source = "01234567890123456789012345678901234567890\n987654321098765432109876543210987654321098\n01234567890123456789012345678901234567890\n9876543210987654321098765432109876543210";
-	// char *before = "lalala";
-	// char *after = "huhuhu";
-	// printf("[before]: %s\n", before);
-	// printf("[after]: %s\n", after);
-	// after = seperate_by_newline(source, &before);
-	// printf("[before]: %s\n", before);
-	// printf("[after]: %s\n", after);
-	int fd;
-
-	fd = open("test.txt", O_RDONLY);
-
-	for (int i = 0; i <= 3; i++)
-		{
-			printf("===================\n");
-			printf("Get_next_line: %s\n", get_next_line(fd));
-		}
 }

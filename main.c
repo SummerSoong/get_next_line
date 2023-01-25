@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "get_next_line.h"
+#define BUFFSIZE 1
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
     for(int i = 0; i <= 10; i++)
 		{
         line = get_next_line(fd);
+				printf("============\n");
         printf("read txt:\t%s\n", line);
         free(line);
     };
