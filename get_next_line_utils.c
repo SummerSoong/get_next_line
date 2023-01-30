@@ -6,7 +6,7 @@
 /*   By: songmengrui <songmengrui@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 22:13:54 by songmengrui       #+#    #+#             */
-/*   Updated: 2023/01/25 18:07:01 by songmengrui      ###   ########.fr       */
+/*   Updated: 2023/01/28 16:42:13 by songmengrui      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
-	size_t	size;
 	size_t	i;
 
 	if (s1 == NULL && s2 == NULL)
@@ -116,4 +115,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	str[i] = '\0';
 	return (str);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }

@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "get_next_line.h"
-#define BUFFSIZE 1
+// #define BUFFER_SIZE 1
 
 int main(int argc, char *argv[])
 {
@@ -19,11 +19,11 @@ int main(int argc, char *argv[])
     char *line;
     int status;
 
-    printf("\n[START] %s\n\tfd: %d\n\n", file_name, fd);
-    for(int i = 0; i <= 10; i++)
+    printf("\n[START] %s\n\tfd: %d\nBUFFER_SIZE: %d\n\n", file_name, fd, BUFFER_SIZE);
+    for(int i = 1; i <= 3; i++)
 		{
-        line = get_next_line(fd);
 				printf("============\n");
+        line = get_next_line(fd);
         printf("read txt:\t%s\n", line);
         free(line);
     };
